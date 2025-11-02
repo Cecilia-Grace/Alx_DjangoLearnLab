@@ -1,6 +1,6 @@
 >>> from bookshelf.models import Book
->>> book_to_delete = Book.objects.get(pk=1)
->>> book_to_delete.delete()
+>>> book = Book.objects.get(pk=1)
+>>> book.delete()
 (1, {'bookshelf.Book': 1})
 >>> books = Book.objects.all()
 >>> print(f"Books left: {books}")
