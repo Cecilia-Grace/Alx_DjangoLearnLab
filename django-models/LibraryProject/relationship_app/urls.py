@@ -10,6 +10,6 @@ urlpatterns = [
     path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library-detail'),
     # Registration
     path('register/', views.register, name='register'),
-    path('logout/', CustomLogoutView.as_view(), template_name='logout'),
-    path('login/', CustomLoginView.as_view(), template_name='login'),
+    path('logout/', CustomLogoutView.as_view(template_name= 'login.html'), name='logout'),
+    path('login/', CustomLoginView.as_view(template_name= 'logout.html'), name='login'),
 ]
