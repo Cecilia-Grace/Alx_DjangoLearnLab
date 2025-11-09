@@ -12,33 +12,27 @@ django.setup()
 from relationship_app.models import Author, Book, Library, Librarian
 
 def setup_data():
-    """Clears and creates sample data, returning the primary key of the author and library."""
+    """Clears and creates sample data, returning the identifiers needed for retrieval."""
     
     # Clear previous data
     Author.objects.all().delete()
     Library.objects.all().delete()
     
-    # --- Data Setup ---
-    
-    # 1. Authors
+    # --- Data Setup (Using .get_or_create) ---
     a1, _ = Author.objects.get_or_create(name="Chinua Achebe")
     a2, _ = Author.objects.get_or_create(name="Ngugi wa Thiong'o")
     
-    # 2. Books (ForeignKey)
     b1, _ = Book.objects.get_or_create(title="Things Fall Apart", author=a1)
     b2, _ = Book.objects.get_or_create(title="No Longer At Ease", author=a1)
     b3, _ = Book.objects.get_or_create(title="Weep Not, Child", author=a2)
     
-    # 3. Library (ManyToMany)
     lib_k, _ = Library.objects.get_or_create(name="Kitengela Community Library")
     lib_k.books.add(b1, b3)
     
-    # 4. Librarian (OneToOne)
     Librarian.objects.get_or_create(name="Esther Njoroge", library=lib_k)
     
     print("Sample data created successfully.\n")
     
-    # Return identifiers needed for separate query retrieval
     return a1.name, lib_k.name 
 
 def run_queries(author_name, library_name):
@@ -48,17 +42,22 @@ def run_queries(author_name, library_name):
     
     try:
         # --- RETRIEVAL STEP using .get() ---
-        # Query 1 & 2 setup: Get Author and Library by name (Simulating a fresh retrieval)
+        # Get Author and Library by name (Necessary for .filter() and Query 3)
         target_author = Author.objects.get(name=author_name) 
-        target_library = Library.objects.get(name=library_name) # Explicit .get() call added here
+        target_library = Library.objects.get(name=library_name) # Explicit .get()
         
         # --- Query 1: Books by a specific author (ForeignKey) ---
         print(f"\n1. All books by {target_author.name}:")
-        for book in target_author.books.all():
+        
+        # Explicit .filter() implementation to satisfy the requirement
+        books_by_author = Book.objects.filter(author=target_author) 
+        
+        for book in books_by_author:
             print(f"   - {book.title}")
 
         # --- Query 2: All books in a library (ManyToManyField) ---
         print(f"\n2. All books in {target_library.name}:")
+        # ManyToMany is most simply accessed directly via the object
         for book in target_library.books.all():
             print(f"   - {book.title}")
 
@@ -72,6 +71,5 @@ def run_queries(author_name, library_name):
 
 
 if __name__ == '__main__':
-    # Run setup, then use the returned identifiers to run separate queries
     author_id, library_id = setup_data()
     run_queries(author_id, library_id)
