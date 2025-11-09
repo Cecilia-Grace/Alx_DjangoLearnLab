@@ -42,27 +42,28 @@ def run_queries(author_name, library_name):
     
     try:
         # --- RETRIEVAL STEP using .get() ---
-        # Get Author and Library by name (Necessary for .filter() and Query 3)
-        target_author = Author.objects.get(name=author_name) 
-        target_library = Library.objects.get(name=library_name) # Explicit .get()
+        # Get Author and Library by name
+        query_author = Author.objects.get(name=author_name) 
+        target_library = Library.objects.get(name=library_name) 
         
         # --- Query 1: Books by a specific author (ForeignKey) ---
-        print(f"\n1. All books by {target_author.name}:")
+        print(f"\n1. All books by {query_author.name}:")
         
-        # Explicit .filter() implementation to satisfy the requirement
-        books_by_author = Book.objects.filter(author=target_author) 
+        # Explicit .filter() implementation, using query_author instance
+        books_by_author = Book.objects.filter(author=query_author) 
         
         for book in books_by_author:
             print(f"   - {book.title}")
 
         # --- Query 2: All books in a library (ManyToManyField) ---
         print(f"\n2. All books in {target_library.name}:")
-        # ManyToMany is most simply accessed directly via the object
+        # Access ManyToMany relationship directly
         for book in target_library.books.all():
             print(f"   - {book.title}")
 
         # --- Query 3: Retrieve the librarian for a library (OneToOneField) ---
         print(f"\n3. Librarian for {target_library.name}:")
+        # Access OneToOne reverse relationship
         librarian_name = target_library.librarian.name
         print(f"   - Librarian: {librarian_name}")
         
