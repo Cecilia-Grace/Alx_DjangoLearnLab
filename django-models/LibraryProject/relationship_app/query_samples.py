@@ -19,20 +19,20 @@ def run_queries_and_setup():
     # --- Data Setup ---
     
     # 1. Authors
-    a1, _ = Author.objects.get_or_create(name="Chinua Achebe")
-    a2, _ = Author.objects.get_or_create(name="Ngugi wa Thiong'o")
+    a1, _ = Author.objects.get(name="Chinua Achebe")
+    a2, _ = Author.objects.get(name="Ngugi wa Thiong'o")
     
     # 2. Books (ForeignKey)
-    b1, _ = Book.objects.get_or_create(title="Things Fall Apart", author=a1)
-    b2, _ = Book.objects.get_or_create(title="No Longer At Ease", author=a1)
-    b3, _ = Book.objects.get_or_create(title="Weep Not, Child", author=a2)
+    b1, _ = Book.objects.get(title="Things Fall Apart", author=a1)
+    b2, _ = Book.objects.get(title="No Longer At Ease", author=a1)
+    b3, _ = Book.objects.get(title="Weep Not, Child", author=a2)
     
     # 3. Library (ManyToMany)
-    lib_k, _ = Library.objects.get_or_create(name="Kitengela Community Library")
+    lib_k, _ = Library.objects.get(name="Kitengela Community Library")
     lib_k.books.add(b1, b3)
     
     # 4. Librarian (OneToOne)
-    Librarian.objects.get_or_create(name="Esther Njoroge", library=lib_k)
+    Librarian.objects.get(name="Esther Njoroge", library=lib_k)
     
     print("--- Query Results ---")
     
