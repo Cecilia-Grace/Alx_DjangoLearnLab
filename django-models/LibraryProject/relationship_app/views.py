@@ -10,6 +10,9 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import DetailView
 from django.views import View
 from django.http import HttpResponse
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import render
+from .models import UserProfile
 
 # Re-including previous views for context (assuming you kept the HTML template version)
 from .models import Book, Library # Assuming models are imported for previous tasks
@@ -43,7 +46,7 @@ def register(request):
 
 # 2. Login View (Built-in)
 class CustomLoginView(LoginView):
-    template_name = 'relationship_app/login.html'
+    template_name = 'login.html'
     fields = '__all__'
     redirect_authenticated_user = True
     
@@ -54,4 +57,38 @@ class CustomLoginView(LoginView):
 # 3. Logout View (Built-in)
 class CustomLogoutView(LogoutView):
     # Optional: Customize the page shown after logout (default is settings.LOGOUT_REDIRECT_URL)
+<<<<<<< HEAD
     template_name = 'relationship_app/logout.html'
+=======
+    template_name = 'logout.html'
+    
+    
+def is_admin(user):
+    # Checks if the user is authenticated AND has the 'Admin' role
+    return user.is_authenticated and user.userprofile.role == UserProfile.ADMIN
+
+def is_librarian(user):
+    # Checks if the user is authenticated AND has the 'Librarian' role
+    return user.is_authenticated and user.userprofile.role == UserProfile.LIBRARIAN
+
+def is_member(user):
+    # Checks if the user is authenticated AND has the 'Member' role
+    return user.is_authenticated and user.userprofile.role == UserProfile.MEMBER
+
+# --- Role-Restricted Views ---
+
+@user_passes_test(is_admin, login_url='/relationship/login/') 
+def admin_view(request):
+    """View accessible only by Admin users."""
+    return render(request, 'relationship_app/admin_view.html', {'role': 'Admin'})
+
+@user_passes_test(is_librarian, login_url='/relationship/login/')
+def librarian_view(request):
+    """View accessible only by Librarian users."""
+    return render(request, 'relationship_app/librarian_view.html', {'role': 'Librarian'})
+
+@user_passes_test(is_member, login_url='/relationship/login/')
+def member_view(request):
+    """View accessible only by Member users."""
+    return render(request, 'relationship_app/member_view.html', {'role': 'Member'})
+>>>>>>> 1ae4096 (initial commit)

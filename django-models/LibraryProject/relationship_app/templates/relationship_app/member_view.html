@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Member Portal</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.username }}!</h1>
+    <h2>This is the {{ role }} restricted view.</h2>
+    <p>You can view the list of available books.</p>
+    <p><a href="{% url 'book-list' %}">Go to Book List</a></p>
+    <p><a href="{% url 'logout' %}">Logout</a></p>
+</body>
+</html>
