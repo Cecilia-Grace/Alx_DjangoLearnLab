@@ -17,6 +17,13 @@ class Book(models.Model):
     def __str__(self):
         return self.title
     
+    class Meta:
+        # Define the custom permissions here
+        permissions = [
+            ("can_add_book", "Can add new book entries"),
+            ("can_change_book", "Can edit existing book entries"),
+            ("can_delete_book", "Can delete book entries"),
+        ]    
 
 class Library(models.Model):
     name = models.CharField(max_length = 200)
@@ -65,6 +72,7 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
         UserProfile.objects.create(user=instance)
     # Ensure profile exists and save if the User object is updated (e.g., in admin)
     instance.userprofile.save() 
-    
+
+
     
 # Create your models here.

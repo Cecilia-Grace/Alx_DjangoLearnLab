@@ -10,14 +10,12 @@ urlpatterns = [
     path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library-detail'),
     # Registration
     path('register/', views.register, name='register'),
-<<<<<<< HEAD
     path('logout/', CustomLogoutView.as_view(template_name= 'login.html'), name='logout'),
     path('login/', CustomLoginView.as_view(template_name= 'logout.html'), name='login'),
-=======
-    path('login/', CustomLoginView.as_view(), name='login'),
-    path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('admin_page/', views.admin_view, name='admin_view'),
     path('librarian_page/', views.librarian_view, name='librarian_view'),
     path('member_page/', views.member_view, name='member_view'),
->>>>>>> 1ae4096 (initial commit)
+    path('books/add/', views.book_add, name='book-add'),
+    path('books/edit/<int:pk>/', views.book_edit, name='book-edit'),
+    path('books/delete/<int:pk>/', views.book_delete, name='book-delete'),
 ]

@@ -11,8 +11,8 @@ from django.views.generic import DetailView
 from django.views import View
 from django.http import HttpResponse
 from django.contrib.auth.decorators import user_passes_test
-from django.shortcuts import render
 from .models import UserProfile
+from django.contrib.auth.decorators import permission_required, login_required
 
 # Re-including previous views for context (assuming you kept the HTML template version)
 from .models import Book, Library # Assuming models are imported for previous tasks
@@ -57,9 +57,6 @@ class CustomLoginView(LoginView):
 # 3. Logout View (Built-in)
 class CustomLogoutView(LogoutView):
     # Optional: Customize the page shown after logout (default is settings.LOGOUT_REDIRECT_URL)
-<<<<<<< HEAD
-    template_name = 'relationship_app/logout.html'
-=======
     template_name = 'logout.html'
     
     
@@ -91,4 +88,21 @@ def librarian_view(request):
 def member_view(request):
     """View accessible only by Member users."""
     return render(request, 'relationship_app/member_view.html', {'role': 'Member'})
->>>>>>> 1ae4096 (initial commit)
+
+@permission_required('relationship_app.can_add_book')
+def book_add(request):
+    """View to handle adding a new book (only accessible with can_add_book permission)."""
+    # In a real app, this would handle a form submission.
+    return HttpResponse("Book Add successful! (Permission checked: can_add_book)")
+
+@permission_required('relationship_app.can_change_book')
+def book_edit(request, pk):
+    """View to handle editing an existing book (only accessible with can_change_book permission)."""
+    # In a real app, this would load and handle a form for Book with ID=pk.
+    return HttpResponse(f"Editing Book ID {pk} successful! (Permission checked: can_change_book)")
+
+@permission_required('relationship_app.can_delete_book')
+def book_delete(request, pk):
+    """View to handle deleting a book (only accessible with can_delete_book permission)."""
+    # In a real app, this would confirm and perform the deletion of Book with ID=pk.
+    return HttpResponse(f"Deleting Book ID {pk} successful! (Permission checked: can_delete_book)")
