@@ -90,19 +90,19 @@ def member_view(request):
     return render(request, 'relationship_app/member_view.html', {'role': 'Member'})
 
 @permission_required('relationship_app.can_add_book')
-def book_add(request):
+def add_book(request):
     """View to handle adding a new book (only accessible with can_add_book permission)."""
     # In a real app, this would handle a form submission.
     return HttpResponse("Book Add successful! (Permission checked: can_add_book)")
 
 @permission_required('relationship_app.can_change_book')
-def book_edit(request, pk):
+def edit_book(request, pk):
     """View to handle editing an existing book (only accessible with can_change_book permission)."""
     # In a real app, this would load and handle a form for Book with ID=pk.
     return HttpResponse(f"Editing Book ID {pk} successful! (Permission checked: can_change_book)")
 
 @permission_required('relationship_app.can_delete_book')
-def book_delete(request, pk):
+def delete_book(request, pk):
     """View to handle deleting a book (only accessible with can_delete_book permission)."""
     # In a real app, this would confirm and perform the deletion of Book with ID=pk.
     return HttpResponse(f"Deleting Book ID {pk} successful! (Permission checked: can_delete_book)")
