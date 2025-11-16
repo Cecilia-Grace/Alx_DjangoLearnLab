@@ -127,9 +127,12 @@ DEBUG = False
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Basic browser protections
+SECURE_SSL_REDIRECT = True  # Ensures all requests are served over HTTPS
 SECURE_BROWSER_XSS_FILTER = True              # Enables X-XSS-Protection header
 SECURE_CONTENT_TYPE_NOSNIFF = True            # Sets X-Content-Type-Options: nosniff
 X_FRAME_OPTIONS = 'DENY'                      # Prevents clickjacking by disallowing iframes
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Cookies: ensure cookies are only sent via HTTPS in production
 CSRF_COOKIE_SECURE = True
