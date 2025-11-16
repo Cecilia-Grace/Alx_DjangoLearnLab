@@ -22,12 +22,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-97jijr265gl35nrk0c0=iw4ow$^5qujrx2b!#s8vu4r%ij24_^'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf',
     'relationship_app'
+    'csp',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +44,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
@@ -124,3 +120,32 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+# Basic browser protections
+SECURE_BROWSER_XSS_FILTER = True              # Enables X-XSS-Protection header
+SECURE_CONTENT_TYPE_NOSNIFF = True            # Sets X-Content-Type-Options: nosniff
+X_FRAME_OPTIONS = 'DENY'                      # Prevents clickjacking by disallowing iframes
+
+# Cookies: ensure cookies are only sent via HTTPS in production
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Optional: enable HSTS (force HTTPS) when using real HTTPS in production
+SECURE_HSTS_SECONDS = 31536000  # 1 year — enable only when you are sure HTTPS is correct
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# CSP that only allows scripts/styles from same origin and trusted CDN(s)
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'",)      # add CDNs you trust, e.g. 'https://cdnjs.cloudflare.com'
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")  # avoid unsafe-inline if possible
+CSP_IMG_SRC = ("'self'", 'data:')
+CSP_FONT_SRC = ("'self'",)
+CSP_CONNECT_SRC = ("'self'",)
+
+
