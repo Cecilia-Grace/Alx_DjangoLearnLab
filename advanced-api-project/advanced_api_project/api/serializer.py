@@ -15,7 +15,7 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = ['id', 'title', 'publication_year', 'author']
         
-    def validate_published_year(self, value): #validation for year not to be in the future
+    def validate_publication_year(self, value): #validation for year not to be in the future
         current_year = date.today().year
         if value > current_year:
             raise serializers.ValidationError("Kindly enter a valid year")
