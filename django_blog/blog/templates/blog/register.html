@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Create Account</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    {% if form.errors %}
+        <p style="color:red;">Please correct the errors above.</p>
+    {% endif %}
+
+    <button type="submit">Register</button>
+</form>
+
+<p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+{% endblock %}
